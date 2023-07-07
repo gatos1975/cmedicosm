@@ -1,6 +1,6 @@
 //TODO: Archivo de javascript para agregar la funcionalidad a la apgina usuarios.html
 function init() {
-  $("#usuarios_form").on("submit", (e) => {
+  $("#Recetas_form").on("submit", (e) => {
     guardayeditarRecetas(e);
   });
 }
@@ -24,18 +24,32 @@ var cargaTablaRoles = () => {
           `<tr>` +
           `<td>${index + 1}</td>` +
           `<td>${recetas.paciente_apel}</td>` +
-          `<td>${recetas.paciente_nom}</td>` +
           `<td>${recetas.receta_fec}</td>` +
           `<td>${recetas.receta_pres}</td>` +
           `<td>${recetas.receta_indi}</td>` +
+          `<td>${recetas.receta_est}</td>` +
           `<td>` +
+          `<button class='btn btn-small btn-success no-imprimir' onclick='uno(${recetas.receta_cod})'><i class="fa-solid fa-pen-to-square"></i></button>` +
           `</tr>`;
       });
       $("#TablaUsuarios").html(html);
     }
   );
 };
-
+var imprimirJavascript = () => {
+  var contenidoImprimir = document.getElementById("impresion").innerHTML;
+  var contenidoOriginal = document.body.innerHTML;
+  document.body.innerHTML = contenidoImprimir;
+  window.print();
+  document.body.innerHTML = contenidoOriginal;
+};
+var imprimirReceta = () => {
+  var contenidoImprimir = document.getElementById("modalRecetas").innerHTML;
+  var contenidoOriginal = document.body.innerHTML;
+  document.body.innerHTML = contenidoImprimir;
+  window.print();
+  document.body.innerHTML = contenidoOriginal;
+};
 var cargaSelectPacientes1 = () => {
   var html = ' <option value="0">Seleccione un Paciente</option>';
   $.post(
@@ -43,9 +57,7 @@ var cargaSelectPacientes1 = () => {
     (listapacientes) => {
       listapacientes = JSON.parse(listapacientes);
       $.each(listapacientes, (index, pacientes) => {
-        html += `<option value="${pacientes.paciente_ced}">${
-          pacientes.paciente_apel + " " + pacientes.paciente_nom
-        }</option>`;
+        html += `<option value="${pacientes.paciente_ced}">${pacientes.paciente_apel}</option>`;
       });
       $("#paciente_ced1").html(html);
     }
@@ -66,17 +78,20 @@ var cargaSelectMedicos1 = () => {
 var guardayeditarRecetas = (e) => {
   e.preventDefault();
   var url = "";
-  var form_Data = new FormData($("#usuarios_form")[0]);
+  var form_Data = new FormData($("#Recetas_form")[0]);
+  /*
   var receta_cod = document.getElementById("receta_cod").value;
+  console.log(receta_cod);
   if (receta_cod === undefined || receta_cod === "") {
     url = "../../controllers/recetas.controller.php?op=insertar";
   } else {
     url = "../../controllers/recetas.controller.php?op=actualizar";
-  }
+  }*/
   //for (var pair of form_Data.entries()) {
   // console.log(pair[0] + ", " + pair[1]);
   //}
   //var form_data = new FormData($("#usuarios_form")[0]);
+  url = "../../controllers/recetas.controller.php?op=actualizar";
   $.ajax({
     url: url,
     type: "POST",
@@ -86,9 +101,10 @@ var guardayeditarRecetas = (e) => {
     //cache: false,
     success: (respuesta) => {
       respuesta = JSON.parse(respuesta);
+      //console.log(respuesta);
       if (respuesta === "ok") {
-        Swal.fire("RECETAS", "Se guardo con éxito", "success");
-        limpiar();
+        Swal.fire("RECETAS", "fue despachado con éxito", "success");
+        //limpiar();
         cargaTablaRoles();
         //cargaTablaUsuarios();
       } else {
@@ -99,24 +115,25 @@ var guardayeditarRecetas = (e) => {
   });
 };
 
-var uno = (historial_cod) => {
+var uno = (receta_cod) => {
   $.post(
-    "../../controllers/historial.controller.php?op=uno",
+    "../../controllers/recetas.controller.php?op=uno",
     {
-      historial_cod: historial_cod,
+      receta_cod: receta_cod,
     },
     (res) => {
       console.log(res);
       res = JSON.parse(res);
-      $("#historial_cod").val(res.historial_cod);
-      $("#historial_det").val(res.historial_det);
-      $("#historial_diag").val(res.historial_diag);
-      $("#historial_trat").val(res.historial_trat);
+      $("#receta_cod").val(res.receta_cod);
+      $("#paciente_apel").val(res.paciente_apel);
+      $("#receta_fec").val(res.receta_fec);
+      $("#receta_pres").val(res.receta_pres);
+      $("#receta_indi").val(res.receta_indi);
+      $("#receta_est").val("DESPACHADO");
     }
   );
-
-  document.getElementById("titulModalUsuarios").innerHTML = "Editar HISTORIAL";
-  $("#modalUsuarios").modal("show");
+  document.getElementById("titulModalUsuarios").innerHTML = "Despachar Recetas";
+  $("#modalRecetas").modal("show");
 };
 
 var eliminar = (historial_cod) => {

@@ -10,7 +10,6 @@ $().ready(() => {
 var cargaTablaRoles = () => {
   var html = "";
   $.post(
-    //"../../controllers/usuario.controller.php?op=todos",
     "../../controllers/signosvitales.controller.php?op=todos",
     (listasignos) => {
       listasignos = JSON.parse(listasignos);
@@ -19,15 +18,14 @@ var cargaTablaRoles = () => {
           `<tr>` +
           `<td>${index + 1}</td>` +
           `<td>${signos.paciente_apel}</td>` +
-          `<td>${signos.paciente_nom}</td>` +
           `<td>${signos.signos_fec}</td>` +
           `<td>${signos.signos_tem}</td>` +
           `<td>${signos.signos_pre}</td>` +
           `<td>${signos.signos_pes}</td>` +
           `<td>${signos.signos_talla}</td>` +
           `<td>` +
-          `<button class='btn btn-success' onclick='uno(${signos.signos_cod})'><i class="fa-solid fa-pen-to-square"></i></button>` +
-          `<button class='btn btn-danger' onclick='eliminar(${signos.signos_cod})'><i class="fa-solid fa-trash"></i></button>` +
+          `<button title='Modificar Datos' class='btn btn-success no-imprimir' onclick='uno(${signos.signos_cod})'><i class="fa-solid fa-pen-to-square"></i></button>` +
+          `<button title='Eliminar Registro' class='btn btn-danger no-imprimir' onclick='eliminar(${signos.signos_cod})'><i class="fa-solid fa-trash"></i></button>` +
           `</td>` +
           `</tr>`;
       });
@@ -36,15 +34,13 @@ var cargaTablaRoles = () => {
   );
 };
 var cargaSelectPacientes = () => {
-  var html = ' <option value="0">Seleccione una Opcion</option>';
+  var html = ' <option value="0">Seleccione un paciente </option>';
   $.post(
     "../../controllers/pacientes.controller.php?op=todos",
     (listapacientes) => {
       listapacientes = JSON.parse(listapacientes);
       $.each(listapacientes, (index, pacientes) => {
-        html += `<option value="${pacientes.paciente_ced}">${
-          pacientes.paciente_apel + " " + pacientes.paciente_nom
-        }</option>`;
+        html += `<option value="${pacientes.paciente_ced}">${pacientes.paciente_apel}</option>`;
       });
       $("#paciente_ced").html(html);
     }
@@ -55,17 +51,13 @@ var guardayeditarSignos = (e) => {
   var url = "";
   var form_Data = new FormData($("#usuarios_form")[0]);
   var signos_cod = document.getElementById("signos_cod").value;
-  //console.log(signos_cod);
+  console.log(signos_cod);
   if (signos_cod === undefined || signos_cod === "") {
-    // console.log(signos_cod);
     url = "../../controllers/signosvitales.controller.php?op=insertar";
   } else {
     url = "../../controllers/signosvitales.controller.php?op=actualizar";
   }
-  //for (var pair of form_Data.entries()) {
-  // console.log(pair[0] + ", " + pair[1]);
-  //}
-  //var form_data = new FormData($("#usuarios_form")[0]);
+
   $.ajax({
     url: url,
     type: "POST",
@@ -74,16 +66,16 @@ var guardayeditarSignos = (e) => {
     contentType: false,
     cache: false,
     success: (respuesta) => {
-      //console.log(respuesta);
       respuesta = JSON.parse(respuesta);
+      console.log(respuesta);
       if (respuesta == "ok") {
         Swal.fire("Signos Vitales", "Se guardo con éxito", "success");
         limpiar();
         cargaTablaRoles();
-        //cargaTablaUsuarios();
       } else {
-        alert("Ocurrio un error al guardar. " + respuesta);
-        console.log(respuesta);
+        //alert("Ocurrio un error al guardar. " + respuesta);
+        limpiar();
+        cargaTablaRoles();
       }
     },
   });
@@ -96,7 +88,7 @@ var uno = (signos_cod) => {
       signos_cod: signos_cod,
     },
     (res) => {
-      console.log(res);
+      //console.log(res);
       res = JSON.parse(res);
       $("#signos_cod").val(res.signos_cod);
       $("#signos_fec").val(res.signos_fec);
@@ -140,14 +132,22 @@ var eliminar = (signos_cod) => {
   });
 };
 
+var imprimirJavascript = () => {
+  var contenidoImprimir = document.getElementById("Impresion").innerHTML;
+  var contenidoOriginal = document.body.innerHTML;
+  document.body.innerHTML = contenidoImprimir;
+  window.print();
+  document.body.innerHTML = contenidoOriginal;
+};
+
 var limpiar = () => {
   document.getElementById("signos_cod").value = "";
-  //document.getElementById("signos_fec").value = "";
+
   $("#signos_tem").val("");
   $("#signos_pre").val("");
   $("#signos_pes").val("");
   $("#signos_talla").val("");
-
+  cargaTablaRoles();
   $("#modalUsuarios").modal("hide");
 };
 init();

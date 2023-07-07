@@ -10,10 +10,10 @@ class RecetasModel
         $datos = mysqli_query($con,$cadena);
         return $datos;
     }
-    public function uno($historial_cod){
+    public function uno($receta_cod){
         $con = new ClaseConexion();
         $con = $con->ProcedimientoConectar();
-        $cadena = "SELECT * FROM `historial` INNER JOIN pacientes on historial.paciente_ced=pacientes.paciente_ced where historial_cod=$historial_cod";
+        $cadena = "SELECT * FROM `recetas` INNER JOIN pacientes on recetas.paciente_ced=pacientes.paciente_ced where receta_cod=$receta_cod";
         $datos = mysqli_query($con, $cadena);
         return $datos;
     }  
@@ -27,10 +27,10 @@ class RecetasModel
             return mysqli_error($con);
         }        
     }
-    public function Actualizar($historial_cod, $historial_det, $historial_diag, $historial_trat){
+    public function Actualizar($receta_cod, $receta_est){
         $con = new ClaseConexion();
         $con=$con->ProcedimientoConectar();
-        $cadena = "UPDATE historial SET historial_det='$historial_det', historial_det='$historial_det', historial_diag='$historial_diag', historial_trat='$historial_trat' WHERE historial_cod=$historial_cod";
+        $cadena = "UPDATE recetas SET  receta_est='$receta_est' WHERE receta_cod=$receta_cod";
         if (mysqli_query($con, $cadena)){
             return 'ok';
         }else{

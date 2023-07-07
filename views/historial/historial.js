@@ -22,15 +22,14 @@ var cargaTablaRoles = () => {
           `<tr>` +
           `<td>${index + 1}</td>` +
           `<td>${historial.paciente_apel}</td>` +
-          `<td>${historial.paciente_nom}</td>` +
           `<td>${historial.historial_fec}</td>` +
           `<td>${historial.historial_det}</td>` +
           `<td>${historial.historial_diag}</td>` +
           `<td>${historial.historial_trat}</td>` +
           `<td>` +
-          `<button class='btn btn-small btn-success' onclick='uno(${historial.historial_cod})'><i class="fa-solid fa-pen-to-square"></i></button>` +
-          `<button class='btn btn-small btn-danger'  onclick='eliminar(${historial.historial_cod})'><i class="fa-solid fa-trash"></i></button>` +
-          `<button class='btn btn-small btn-primary'  onclick='recetamedica(${historial.historial_cod}, "${historial.paciente_ced}", "${historial.medico_cod}")'><i class="fa-solid fa-notes-medical"></i></button>` +
+          `<button title='Modificar Atencion medica' class='btn btn-small btn-success no-imprimir' onclick='uno(${historial.historial_cod})'><i class="fa-solid fa-pen-to-square"></i></button>` +
+          `<button title='Eliminar Registro' class='btn btn-small btn-danger no-imprimir'  onclick='eliminar(${historial.historial_cod})'><i class="fa-solid fa-trash"></i></button>` +
+          `<button title='Emitir Receta Medica' class='btn btn-small btn-primary no-imprimir'  onclick='recetamedica(${historial.historial_cod}, "${historial.paciente_ced}", "${historial.medico_cod}")'><i class="fa-solid fa-notes-medical"></i></button>` +
           `</td>` +
           `</tr>`;
       });
@@ -54,9 +53,7 @@ var cargaSelectPacientes = () => {
     (listapacientes) => {
       listapacientes = JSON.parse(listapacientes);
       $.each(listapacientes, (index, pacientes) => {
-        html += `<option value="${pacientes.paciente_ced}">${
-          pacientes.paciente_apel + " " + pacientes.paciente_nom
-        }</option>`;
+        html += `<option value="${pacientes.paciente_ced}">${pacientes.paciente_apel}</option>`;
       });
       $("#paciente_ced").html(html);
     }
@@ -67,9 +64,7 @@ var cargaSelectMedicos = () => {
   $.post("../../controllers/medico.controller.php?op=todos", (listamedicos) => {
     listamedicos = JSON.parse(listamedicos);
     $.each(listamedicos, (index, medicos) => {
-      html += `<option value="${medicos.medico_cod}">${
-        medicos.medico_ape + " " + medicos.medico_nom
-      }</option>`;
+      html += `<option value="${medicos.medico_cod}">${medicos.medico_ape}</option>`;
     });
     $("#medico_cod").html(html);
   });
@@ -179,6 +174,14 @@ var eliminar = (historial_cod) => {
       );
     }
   });
+};
+
+var imprimirJavascript = () => {
+  var contenidoImprimir = document.getElementById("Impresion").innerHTML;
+  var contenidoOriginal = document.body.innerHTML;
+  document.body.innerHTML = contenidoImprimir;
+  window.print();
+  document.body.innerHTML = contenidoOriginal;
 };
 
 var limpiar = () => {

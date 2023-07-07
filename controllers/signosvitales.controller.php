@@ -24,16 +24,13 @@ switch ($_GET['op']) {  //TODO: Clausula de desicion para obtener variable tipo 
             break;
 
         case 'insertar':
-            //$signos_fec = $_POST['signos_fec'];
             $signos_tem = $_POST['signos_tem'];
             $signos_pre = $_POST['signos_pre'];
             $signos_pes = $_POST['signos_pes'];
             $signos_talla = $_POST['signos_talla'];
             $paciente_ced = $_POST['paciente_ced'];
-
-            $datos = array();
-           
-            $datos = $Signos->Insertar($signos_tem, $signos_pre, $signos_pes, $signos_talla,$paciente_ced);
+            $datos = array();          
+            $datos = $Signos->Insertar($signos_tem, $signos_pre, $signos_pes, $signos_talla, $paciente_ced);
             echo json_encode($datos);
             break;
     

@@ -23,8 +23,8 @@ var cargaTablaUsuarios = () => {
           `<td>${usuario.correo}</td>` +
           `<td>${usuario.Detalle}</td>` +
           `<td>` +
-          `<button class='btn btn-success'><i class="fa-solid fa-pen-to-square"></i></button>` +
-          `<button class='btn btn-danger' onclick='eliminar(${usuario.idUsaurio})'><i class="fa-solid fa-trash"></i></button>` +
+          `<button title='Modificar Datos' class='btn btn-success'onclick='uno(${usuario.idUsaurio})'><i class="fa-solid fa-pen-to-square"></i></button>` +
+          `<button title='Eliminar Registro' class='btn btn-danger' onclick='eliminar(${usuario.idUsaurio})'><i class="fa-solid fa-trash"></i></button>` +
           `</td>` +
           `</tr>`;
       });
@@ -44,6 +44,27 @@ var cargaSelectRoles = () => {
   });
 };
 
+var uno = (idUsaurio) => {
+  $.post(
+    "../../controllers/usuario.controller.php?op=uno",
+    {
+      idUsaurio: idUsaurio,
+    },
+    (res) => {
+      console.log(res);
+      res = JSON.parse(res);
+      $("#idUsaurio").val(res.idUsaurio);
+      $("#Nombres").val(res.Nombres);
+      $("#Apellidos").val(res.Apellidos);
+      $("#contrasenia").val(res.contrasenia);
+      $("#correo").val(res.correo);
+    }
+  );
+
+  document.getElementById("titulModalUsuarios").innerHTML = "Editar Usuarios";
+  $("#modalUsuarios").modal("show");
+};
+
 var guardayeditarUsuarios = (e) => {
   e.preventDefault();
   var url = "";
@@ -54,9 +75,9 @@ var guardayeditarUsuarios = (e) => {
   } else {
     url = "../../controllers/usuario.controller.php?op=actualizar";
   }
-  for (var pair of form_Data.entries()) {
-    console.log(pair[0] + ", " + pair[1]);
-  }
+  //for (var pair of form_Data.entries()) {
+  // console.log(pair[0] + ", " + pair[1]);
+  //}
   $.ajax({
     url: url,
     type: "POST",
@@ -65,7 +86,7 @@ var guardayeditarUsuarios = (e) => {
     contentType: false,
     cache: false,
     success: (respuesta) => {
-      console.log(respuesta);
+      //console.log(respuesta);
       respuesta = JSON.parse(respuesta);
       if (respuesta == "ok") {
         alert("Se guardo con exito");
@@ -99,7 +120,7 @@ var eliminar = (idUsaurio) => {
           if (res === "ok") {
             Swal.fire("Usuario", "Se eliminó con éxito", "success");
             limpiar();
-            llenarTabla();
+            cargaTablaUsuarios();
           } else {
             Swal.fire("Usuario", "NO Se eliminó", "success");
           }
@@ -113,7 +134,7 @@ var limpiar = () => {
   document.getElementById("idUsaurio").value = "";
   document.getElementById("Nombres").value = "";
   $("#Apellidos").val("");
-  $("#coreo").val("");
+  $("#correo").val("");
   $("#contrasenia").val("");
   $("#idRoles").val("0");
 

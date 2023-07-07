@@ -16,9 +16,9 @@ switch ($_GET['op']) {  //TODO: Clausula de desicion para obtener variable tipo 
         break;
         
         case 'uno':
-            $historial_cod = $_POST['historial_cod'];    
+            $receta_cod = $_POST['receta_cod'];    
             $datos = array();   
-            $datos = $Historial->uno($historial_cod);   
+            $datos = $Recetas->uno($receta_cod);   
             $respuesta = mysqli_fetch_assoc($datos);   
             echo json_encode($respuesta);   
             break;
@@ -44,13 +44,12 @@ switch ($_GET['op']) {  //TODO: Clausula de desicion para obtener variable tipo 
             break;
     
             case 'actualizar':
-            $historial_cod = $_POST['historial_cod'];
-            $historial_det = $_POST['historial_det'];
-            $historial_diag = $_POST['historial_diag'];
-            $historial_trat = $_POST['historial_trat'];
+            $receta_cod = $_POST['receta_cod'];
+            
+            $receta_est = $_POST['receta_est'];
               
                 $datos = array();        
-                $datos = $Historial->Actualizar($historial_cod, $historial_det, $historial_diag, $historial_trat);        
+                $datos = $Recetas->Actualizar($receta_cod, $receta_est);        
                 //$respuesta = mysqli_fetch_assoc($datos);        
                 echo json_encode($datos);        
                 break;

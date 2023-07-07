@@ -18,13 +18,12 @@ var cargaTablaUsuarios = () => {
         `<td>${index + 1}</td>` +
         `<td>${medico.medico_cod}</td>` +
         `<td>${medico.medico_ape}</td>` +
-        `<td>${medico.medico_nom}</td>` +
         `<td>${medico.medico_esp}</td>` +
         `<td>${medico.medico_tel}</td>` +
         `<td>${medico.medico_cor}</td>` +
         `<td>` +
-        `<button class='btn btn-success' onclick='uno(${medico.medico_cod})'><i class="fa-solid fa-pen-to-square"></i></button>` +
-        `<button class='btn btn-danger' onclick='eliminar(${medico.medico_cod})'><i class="fa-solid fa-trash"></i></button>` +
+        `<button class='btn btn-success no-imprimir' onclick='uno(${medico.medico_cod})'><i class="fa-solid fa-pen-to-square"></i></button>` +
+        `<button class='btn btn-danger no-imprimir' onclick='eliminar(${medico.medico_cod})'><i class="fa-solid fa-trash"></i></button>` +
         `</td>` +
         `</tr>`;
     });
@@ -39,16 +38,10 @@ var guardayeditarMedico = (e) => {
   var medico_cod = document.getElementById("bandera").value;
   if (medico_cod === undefined || medico_cod === "") {
     url = "../../controllers/medico.controller.php?op=actualizar";
-    //url = "../../controllers/medico.controller.php?op=insertar";
   } else {
     url = "../../controllers/medico.controller.php?op=insertar";
-    //
   }
 
-  /*for (var pair of form_Data.entries()) {
-    console.log(pair[0] + ", " + pair[1]);*/
-
-  //var form_data = new FormData($("#usuarios_form")[0]);
   $.ajax({
     url: url,
     type: "POST",
@@ -81,7 +74,7 @@ var uno = (medico_cod) => {
       res = JSON.parse(res);
       $("#medico_cod").val(res.medico_cod);
       $("#medico_ape").val(res.medico_ape);
-      $("#medico_nom").val(res.medico_nom);
+
       $("#medico_esp").val(res.medico_esp);
       $("#medico_tel").val(res.medico_tel);
       $("#medico_cor").val(res.medico_cor);
@@ -123,11 +116,11 @@ var eliminar = (medico_cod) => {
 
 var limpiar = () => {
   document.getElementById("medico_cod").value = "";
-  document.getElementById("medico_nom").value = "";
-  $("#Medico_ape").val("");
-  $("#Medico_esp").val("");
-  $("#Medico_tel").val("");
-  $("#Medico_cor").val("");
+
+  $("#medico_ape").val("");
+  $("#medico_esp").val("");
+  $("#medico_tel").val("");
+  $("#medico_cor").val("");
   $("#modalUsuarios").modal("hide");
 };
 
@@ -172,15 +165,27 @@ var repetido = () => {
       datos = JSON.parse(datos);
 
       if (parseInt(datos.codigomed) > 0) {
-        $("#repetido").removeClass("d-none");
-        $("#repetido").html("Medico ya existe");
+        $("#mensaje").removeClass("d-none");
+        $("#mensaje").html("Medico ya existe");
         $("button[type='submit']").prop("disabled", true);
+        //console.log("La cédula no es válida");
+        //document.getElementById("mensaje").innerHTML =
+        //("Atención: Medico ya existe");
+        document.getElementById("medico_cod").value = "";
+        document.getElementById("medico_cod").focus();
       } else {
-        $("#repetido").addClass("d-none");
+        $("#mensaje").addClass("d-none");
         $("button[type='submit']").prop("disabled", false);
       }
     }
   );
+};
+var imprimirJavascript = () => {
+  var contenidoImprimir = document.getElementById("Impresion").innerHTML;
+  var contenidoOriginal = document.body.innerHTML;
+  document.body.innerHTML = contenidoImprimir;
+  window.print();
+  document.body.innerHTML = contenidoOriginal;
 };
 function validarCedula(cedula) {
   var esValida = verificarCedulaEcuador(cedula);

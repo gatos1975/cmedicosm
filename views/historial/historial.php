@@ -8,6 +8,13 @@ if (isset($_SESSION["idUsuario"])) {
     <html lang="es">
     <head>
         <?php require_once('../html/head.php')  ?>
+        <style>
+            @media print{
+                .no-imprimir{
+                    display: none;
+                }
+            }
+        </style>
         <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
         
     </head>
@@ -23,22 +30,23 @@ if (isset($_SESSION["idUsuario"])) {
                     <!-- End of Topbar -->
                     <div class="container-fluid">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                            <h1 class="h3 mb-0 text-gray-800"></h1>
                         </div>
                         <div class="row">
-                            <div class="col-lg-12 mb-4">
+                            <div class="col-lg-12 mb-4" id="Impresion">
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3" class="botones-container" >
-                                        <h6 class="m-0 font-weight-bold text-primary">HISTORIAL DE PACIENTES</h6>                              
-                                        <button onclick="cargaSelectPacientes();cargaSelectMedicos()" class="btn btn-primary float-left" data-toggle="modal" data-target="#modalUsuarios"> Agregar Consulta Médica</button>
+                                        <h6 class="m-0 font-weight-bold text-primary">ATENCION MEDICA</h6>                              
+                                        <button onclick="cargaSelectPacientes();cargaSelectMedicos()" class="btn btn-primary float-left no-imprimir" data-toggle="modal" data-target="#modalUsuarios"> Nuevo</button>
+                                        <button onclick="imprimirJavascript()" class="btn btn-primary float-left no-imprimir" > Imprimir</button>
                                     </div>
                                     <div class="card-body">
                                         <table width="100%" cellspacing="0" class="table table-bordered table-striped table-responsive">
-                                            <thead>
+                                            <thead class="table-dark">
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Apellidos</th>
-                                                    <th>Nombres</th>
+                                                    <th>Apellidos y Nombres</th>
+                                                   
                                                     <th>Fecha</th>
                                                     <th>Estado</th>
                                                     <th>Diagnostico</th>

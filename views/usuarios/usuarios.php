@@ -21,18 +21,18 @@ if (isset($_SESSION["idUsuario"])) {
                     <!-- End of Topbar -->
                     <div class="container-fluid">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                            <h1 class="h3 mb-0 text-gray-800"></h1>
                         </div>
                         <div class="row">
                             <div class="col-lg-12 mb-4">
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
                                         <h6 class="m-0 font-weight-bold text-primary">Lista de Usuarios</h6>                              
-                                        <button onclick="cargaSelectRoles()" class="btn btn-primary float-left" data-toggle="modal" data-target="#modalUsuarios"> Nuevo Usuario</button>                                   
+                                        <button onclick="cargaSelectRoles()" class="btn btn-primary float-left" data-toggle="modal" data-target="#modalUsuarios"> Nuevo</button>                                   
                                     </div>
                                     <div class="card-body">
                                         <table width="100%" cellspacing="0" class="table table-bordered table-striped table-responsive">
-                                            <thead>
+                                            <thead class="table-dark">
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Nombres</th>
@@ -73,13 +73,14 @@ if (isset($_SESSION["idUsuario"])) {
                                         <input type="text" name="Apellidos" id="Apellidos" class="form-control" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="correo" class="control-label">Correo</label>
-                                        <input type="mail" name="correo" id="correo" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
                                         <label for="contrasenia" class="control-label">contrasenia</label>
                                         <input type="text" name="contrasenia" id="contrasenia" class="form-control">
                                     </div>
+                                    <div class="form-group">
+                                        <label for="correo" class="control-label">Correo</label>
+                                        <input type="mail" name="correo" id="correo" class="form-control" required>
+                                    </div>
+                                    
                                     <div class="form-group">
                                         <label for="Rol" class="control-label">Rol</label>
                                         <select name="idRoles" id="idRoles" class="form-control">                                         

@@ -9,7 +9,7 @@
     />
     <link rel="stylesheet" href="./css/main.css" />
   </head>
-  <body class="cover" style="background-image: url(./assets/img/loginFont.jpg)">
+  <body class="cover" style="background-image: url(./assets/img/fondo.jpg)">
     <form action="controllers/usuario.controller.php?op=login" method="post" autocomplete="off" class="full-box logInForm">
       <p class="text-center text-muted">
         <i class="zmdi zmdi-account-circle zmdi-hc-5x"></i>

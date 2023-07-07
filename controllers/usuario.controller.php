@@ -52,9 +52,27 @@ switch ($_GET['op']) {  //TODO: Clausula de desicion para obtener variable tipo 
         $datos = $Usuario->Insertar($Nombres, $Apellidos, $correo, $contrasenia,$idRoles); 
         echo json_encode($datos);
         break;
+        case 'uno':
+            $idUsaurio = $_POST['idUsaurio'];    
+            $datos = array();   
+            $datos = $Usuario->uno($idUsaurio);   
+            $respuesta = mysqli_fetch_assoc($datos);   
+            echo json_encode($respuesta);   
+            break;
 
-    case 'actualizar':
-        break;
+        case 'actualizar':
+            $idUsaurio = $_POST['idUsaurio'];   
+            $Nombres = $_POST['Nombres'];   
+            $Apellidos = $_POST['Apellidos']; 
+            $contrasenia = $_POST['contrasenia']; 
+            $correo = $_POST['correo']; 
+                 
+            $datos = array();        
+            $datos = $Usuario->Actualizar($idUsaurio, $Nombres, $Apellidos, $contrasenia, $correo);        
+            //$respuesta = mysqli_fetch_assoc($datos);        
+            echo json_encode($datos);        
+            break;
+
     case 'eliminar':        
         $idUsaurio = $_POST['idUsaurio'];       
         $datos = array();        

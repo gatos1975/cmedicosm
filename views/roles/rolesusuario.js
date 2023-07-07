@@ -30,7 +30,7 @@ var cargaTablaRoles = () => {
   );
 };
 var cargaSelectRoles = () => {
-  var html = ' <option value="0">Seleccione una Opcion</option>';
+  var html = ' <option value="0">Seleccione un tipo de usuario</option>';
   $.post("../../controllers/roles.controller.php?op=todos", (listaroles) => {
     listaroles = JSON.parse(listaroles);
     $.each(listaroles, (index, rol) => {

@@ -21,18 +21,18 @@ if (isset($_SESSION["idUsuario"])) {
                     <!-- End of Topbar -->
                     <div class="container-fluid">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                            <h1 class="h3 mb-0 text-gray-800"></h1>
                         </div>
                         <div class="row">
                             <div class="col-lg-12 mb-4">
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
                                         <h6 class="m-0 font-weight-bold text-primary">Listado de roles de Usuarios</h6>                              
-                                        <button  class="btn btn-primary float-left" data-toggle="modal" data-target="#modalUsuarios"> Nuevo Rol de Usuario</button>                                   
+                                        <button  class="btn btn-primary float-left" data-toggle="modal" data-target="#modalUsuarios"> Nuevo</button>                                   
                                     </div>
                                     <div class="card-body">
                                         <table width="100%" cellspacing="0" class="table table-bordered table-striped table-responsive">
-                                            <thead>
+                                            <thead class="table-dark">
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Detalle Rol</th>

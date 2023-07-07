@@ -21,10 +21,10 @@ class UsuariosModel
         return $datos;
     }
 
-    public function uno($idUsuario){
+    public function uno($idUsaurio){
         $con = new ClaseConexion();
         $con = $con->ProcedimientoConectar();
-        $cadena = "SELECT usuario.*, roles.* FROM `usuario` INNER JOIN Usuarios_Roles on usuario.idUsaurio = Usuarios_Roles.idUsuario INNER JOIN roles on Usuarios_Roles.idRoles = roles.idRoles where usuario.idUsaurio = $idUsuario";
+        $cadena = "SELECT usuario.*, roles.* FROM `usuario` INNER JOIN Usuarios_Roles on usuario.idUsaurio = Usuarios_Roles.idUsuario INNER JOIN roles on Usuarios_Roles.idRoles = roles.idRoles where usuario.idUsaurio = $idUsaurio";
         $datos = mysqli_query($con, $cadena);
         return $datos;
     }
@@ -41,6 +41,16 @@ class UsuariosModel
             return 'Error al insertar el rol del usuario';
         }
 
+    }
+    public function Actualizar($idUsaurio, $Nombres, $Apellidos, $contrasenia, $correo){
+        $con = new ClaseConexion();
+        $con=$con->ProcedimientoConectar();
+        $cadena = "UPDATE `usuario` SET `Nombres`='$Nombres', `Apellidos`='$Apellidos',`contrasenia`='$contrasenia',`correo`='$correo' WHERE idUsaurio=$idUsaurio";
+        if (mysqli_query($con, $cadena)){
+            return 'ok';
+        }else{
+            return mysqli_error($con);
+        }
     }
     public function Eliminar($idUsaurio){
         $con = new ClaseConexion();
@@ -67,14 +77,7 @@ class UsuariosModel
             echo "Error al eliminar registros de la tabla hija: " . mysqli_error($conexion);
         }
         
-        //if (mysqli_query($con, $cadena) ){
-            //cadena2 = "DELETE FROM `Usuario` WHERE idUsaurio=$idUsaurio ";
-           // if (mysqli_query($con, $cadena2) ){
-             //   return 'ok';
-            //}
-            //else {
-                //return mysqli_error($conv); # code...
-            //}
+
         
     }
     

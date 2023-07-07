@@ -20,17 +20,14 @@ var cargaTablaUsuarios = () => {
           `<td>${index + 1}</td>` +
           `<td>${pacientes.paciente_ced}</td>` +
           `<td>${pacientes.paciente_apel}</td>` +
-          `<td>${pacientes.paciente_nom}</td>` +
           `<td>${pacientes.paciente_fnac}</td>` +
           `<td>${pacientes.paciente_gen}</td>` +
-          `<td>${pacientes.paciente_eciv}</td>` +
           `<td>${pacientes.paciente_tel}</td>` +
           `<td>${pacientes.paciente_cor}</td>` +
           `<td>${pacientes.paciente_dom}</td>` +
-          `<td>${pacientes.paciente_otro}</td>` +
           `<td>` +
-          `<button class='btn btn-success' onclick='uno(${pacientes.paciente_ced})'><i class="fa-solid fa-pen-to-square"></i></button>` +
-          `<button class='btn btn-danger' onclick='eliminar(${pacientes.paciente_ced})'><i class="fa-solid fa-trash"></i></button>` +
+          `<button title='Modificar Datos de Paciente' class='btn btn-success' onclick='uno(${pacientes.paciente_ced})'><i class="fa-solid fa-pen-to-square"></i></button>` +
+          `<button title='Eliminar Registro' class='btn btn-danger' onclick='eliminar(${pacientes.paciente_ced})'><i class="fa-solid fa-trash"></i></button>` +
           `</td>` +
           `</tr>`;
       });
@@ -39,11 +36,37 @@ var cargaTablaUsuarios = () => {
   );
 };
 
+var repetido = () => {
+  var paciente_ced = document.getElementById("paciente_ced").value;
+  $.post(
+    "../../controllers/pacientes.controller.php?op=repetido",
+    { paciente_ced: paciente_ced },
+    (datos) => {
+      datos = JSON.parse(datos);
+
+      if (parseInt(datos.codigopac) > 0) {
+        $("#mensaje").removeClass("d-none");
+        $("#mensaje").html("El Paciente ya existe");
+        $("button[type='submit']").prop("disabled", true);
+
+        document.getElementById("paciente_ced").value = "";
+        document.getElementById("paciente_ced").focus();
+      } else {
+        $("#mensaje").addClass("d-none");
+        $("button[type='submit']").prop("disabled", false);
+      }
+    }
+  );
+};
+
 var guardayeditarPacientes = (e) => {
   e.preventDefault();
   var url = "";
   var form_Data = new FormData($("#usuarios_form")[0]);
+  //var input = document.getElementById("paciente_ced");
+  //input.removeAttribute("disabled");
   var paciente_ced = document.getElementById("bandera").value;
+
   if (paciente_ced === undefined || paciente_ced === "") {
     url = "../../controllers/pacientes.controller.php?op=actualizar";
   } else {
@@ -63,10 +86,11 @@ var guardayeditarPacientes = (e) => {
     contentType: false,
     cache: false,
     success: (respuesta) => {
-      console.log(respuesta);
+      //console.log(respuesta);
       respuesta = JSON.parse(respuesta);
       if (respuesta == "ok") {
-        alert("Se guardo con exito");
+        Swal.fire("PACIENTES", "Se guardo con éxito", "success");
+        //alert("Se guardo con exito");
         limpiar();
         cargaTablaUsuarios();
       } else {
@@ -87,19 +111,22 @@ var uno = (paciente_ced) => {
       res = JSON.parse(res);
       $("#paciente_ced").val(res.paciente_ced);
       $("#paciente_apel").val(res.paciente_apel);
-      $("#paciente_nom").val(res.paciente_nom);
       $("#paciente_fnac").val(res.paciente_fnac);
       $("#paciente_gen").val(res.paciente_gen);
-      $("#paciente_eciv").val(res.paciente_eciv);
       $("#paciente_tel").val(res.paciente_tel);
       $("#paciente_cor").val(res.paciente_cor);
       $("#paciente_dom").val(res.paciente_dom);
-      $("#paciente_otro").val(res.paciente_otro);
     }
   );
   document.getElementById("titulModalUsuarios").innerHTML = "Editar Pacientes";
+  $("#paciente_ced").addClass("d-none");
+  //$("#mensaje").addClass("d-none")
+  //$("#mensaje").removeClass("d-none");
+  //var input = document.getElementById("paciente_ced");
+  //input.setAttribute("disabled", "disabled");
   $("#modalUsuarios").modal("show");
 };
+
 var eliminar = (paciente_ced) => {
   Swal.fire({
     title: "PACIENTES",
@@ -119,9 +146,10 @@ var eliminar = (paciente_ced) => {
         (res) => {
           res = JSON.parse(res);
           if (res === "ok") {
+            cargaTablaUsuarios();
             Swal.fire("Paciente", "Se eliminó con éxito", "success");
             limpiar();
-            llenarTabla();
+            cargaTablaUsuarios();
           } else {
             Swal.fire("Paciente", "NO Se eliminó", "success");
           }
@@ -134,14 +162,14 @@ var eliminar = (paciente_ced) => {
 var limpiar = () => {
   document.getElementById("paciente_ced").value = "";
   document.getElementById("paciente_apel").value = "";
-  $("#paciente_nom").val("");
   $("#paciente_fnac").val("");
   $("#paciente_gen").val("");
-  $("#paciente_eciv").val("");
   $("#paciente_tel").val("");
   $("#paciente_cor").val("");
   $("#paciente_dom").val("");
-  $("#paciente_otro").val("");
+
+  $("#paciente_ced").removeClass("d-none");
+
   $("#modalUsuarios").modal("hide");
 };
 init();
@@ -175,7 +203,13 @@ function verificarCedulaEcuador(cedula) {
   }
   return false;
 }
-
+var imprimirJavascript = () => {
+  var contenidoImprimir = document.getElementById("Impresion").innerHTML;
+  var contenidoOriginal = document.body.innerHTML;
+  document.body.innerHTML = contenidoImprimir;
+  window.print();
+  document.body.innerHTML = contenidoOriginal;
+};
 function validarCedula(cedula) {
   var esValida = verificarCedulaEcuador(cedula);
   console.log(esValida);

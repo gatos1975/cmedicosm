@@ -8,6 +8,13 @@ if (isset($_SESSION["idUsuario"])) {
     <html lang="es">
     <head>
         <?php require_once('../html/head.php')  ?>
+        <style>
+            @media print{
+                .no-imprimir{
+                    display: none;
+                }
+            }
+        </style>
         <script>
     function asignarValor() {
       var valor = "nuevo"; // Valor que deseas asignar al input
@@ -28,23 +35,25 @@ if (isset($_SESSION["idUsuario"])) {
                     <!-- End of Topbar -->
                     <div class="container-fluid">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800"></h1>
+                            <h1 class="h3 mb-0 text-gray-800">MEDICOS</h1>
                         </div>
                         <div class="row">
-                            <div class="col-lg-12 mb-4">
+                            <div class="col-lg-12 mb-4" id="Impresion">
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
                                         <h6 class="m-0 font-weight-bold text-primary">Lista de Médicos</h6>                              
-                                        <button  onclick="asignarValor()" class="btn btn-primary float-left" data-toggle="modal" data-target="#modalUsuarios"> Nuevo Médico</button>                                   
+                                        <button  onclick="asignarValor()" class="btn btn-primary float-left no-imprimir" data-toggle="modal" data-target="#modalUsuarios"> Nuevo</button>                                   
+                                        <button  onclick="imprimirJavascript()" class="btn btn-primary float-left no-imprimir" > Imprimir</button>                                   
+                                    
                                     </div>
                                     <div class="card-body">
                                         <table width="100%" cellspacing="0" class="table table-bordered table-striped table-responsive">
-                                            <thead>
+                                            <thead class="table-dark">
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Cedula</th>
-                                                    <th>Apellidos</th>
-                                                    <th>Nombres</th>
+                                                    <th>Apellidos y Nombres</th>
+                                                  
                                                     <th>Especialidad</th>
                                                     <th>Telefono</th>
                                                     <th>Correo</th>
@@ -72,21 +81,18 @@ if (isset($_SESSION["idUsuario"])) {
                             <form id="usuarios_form" >
                                 <div class="modal-body">
                                     <input type="hidden" name="bandera" id="bandera">
-                                    <h6 class="alert alert-danger" id="mensaje"></h6>
+                                    
                                     <div class="form-group">
                                         <label for="medico_cod" class="control-label">Cédula</label>
                                         <input type="text" name="medico_cod" id="medico_cod" class="form-control" onblur="" onfocusout="validarCedula(this.value);repetido(this.value)" required>
                                        
-                                        <div class="alert alert-danger d-none" role="alert" id="repetido"></div>
+                                        <div class="alert alert-danger d-none" role="alert" id="mensaje"></div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="medico_ape" class="control-label">Apellidos</label>
+                                        <label for="medico_ape" class="control-label">Apellidos y Nombres</label>
                                         <input type="text" name="medico_ape" id="medico_ape" class="form-control" required>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="medico_nom" class="control-label">Nombres</label>
-                                        <input type="text" name="medico_nom" id="medico_nom" class="form-control" required>
-                                    </div>
+                                    
                                     <div class="form-group">
                                         <label for="medico_esp" class="control-label">Especialidad</label>
                                         <input type="text" name="medico_esp" id="medico_esp" class="form-control">

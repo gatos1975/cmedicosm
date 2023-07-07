@@ -17,19 +17,13 @@ class SignosVitalesModel
         $datos = mysqli_query($con, $cadena);
         return $datos;
     }  
-    public function Insertar($signos_tem, $signos_pre,$signos_pes, $signos_talla, $paciente_ced){
+    public function Insertar($signos_tem, $signos_pre, $signos_pes, $signos_talla, $paciente_ced){
         $con = new ClaseConexion();
         $con = $con->ProcedimientoConectar();
-        $cadena = "INSERT INTO `signosvitales`(`signos_tem`,`signos_pre`,`signos_pes`,`signos_talla`,`paciente_ced`) VALUES ('$signos_tem', '$signos_pre','$signos_pes','$signos_talla','$paciente_ced')";
+        $cadena ="INSERT INTO `signosvitales`(`paciente_ced`, `signos_tem`, `signos_pre`, `signos_pes`, `signos_talla`) VALUES ('$paciente_ced','$signos_tem', '$signos_pre','$signos_pes', '$signos_talla')";
         $datos = mysqli_query($con,$cadena);
-        //if(mysqli_insert_id($con) > 0){
-            //definir el modelo usuarios_roles
-            //$UsuarioRoles = new UsuariosRolesModel();
-            //return $UsuarioRoles->Insertar(mysqli_insert_id($con), $idRoles);
-        //}else{
-          //  return 'Error al insertar el rol del usuario';
-        //}
     }
+
     public function Actualizar($idRoles,$detalle){
         $con = new ClaseConexion();
         $con=$con->ProcedimientoConectar();
